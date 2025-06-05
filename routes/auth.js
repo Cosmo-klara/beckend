@@ -48,7 +48,7 @@ router.post('/register', (req, res) => {
 
     const sql = `INSERT INTO ${tableName} (id, password) VALUES (?, ?)`;
 
-    db.query(sql, [id], [password], (err, result) => {
+    db.query(sql, [id, password], (err, result) => {
         if (err) {
             if (err.code === 'ER_DUP_ENTRY')
                 return res.status(400).send('ID already exists');

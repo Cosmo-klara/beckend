@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 
 // 注册路由
 const authRoutes = require('./routes/auth');
+const favoriteRoutes = require('./routes/favorite');
+const stationRoutes = require('./routes/station');
 
 const app = express();
 app.use(cors());
@@ -12,6 +14,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/auth', authRoutes);
+app.use('/favorite', favoriteRoutes);
+app.use('/station', stationRoutes);
+
 
 // Start server
 const PORT = process.env.PORT || 3000;
