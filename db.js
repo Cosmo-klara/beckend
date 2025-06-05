@@ -1,6 +1,6 @@
 // 似乎必须把数据库连接单独提取出来以避免循环依赖问题
 
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 const pool = mysql.createConnection({
     host: 'localhost',

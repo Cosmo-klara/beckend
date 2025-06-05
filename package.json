@@ -14,8 +14,15 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
-    "mysql": "^2.18.1"
+    "mysql2": "^3.14.1"
   },
-  "devDependencies": {},
-  "description": ""
+  "description": "> 部分插件可能需要单独下载，如果mysql插件出现报错可以换在db.js中将'mysql'换成'mysql2'进行尝试",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cosmo-klara/beckend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Cosmo-klara/beckend/issues"
+  },
+  "homepage": "https://github.com/Cosmo-klara/beckend#readme"
 }
