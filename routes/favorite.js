@@ -12,6 +12,7 @@ router.post('/query', (req, res) => {
     // 在收藏表favorites根据user_id查询对应全部条目，并根据其中的station_id在stations表中查询其所属驿站，返回驿站信息(驿站名称，地址，评分，营业时间)
     const sql = `
         SELECT
+            station_id,
             s.station_name,
             s.address,
             s.score,
@@ -30,11 +31,13 @@ router.post('/query', (req, res) => {
             // 返回无收藏
             return res.send({ message: 'No favorites' });
         }
+        // 待测试，返回的 station_id 需要加载到本地变量（便于添加和删除）
         res.send({
-            station_name: result[0],
-            address: result[1],
-            score: result[2],
-            business_hours: result[3]
+            station_id: result[0],
+            station_name: result[1],
+            address: result[2],
+            score: result[3],
+            business_hours: result[4]
         });
     });
 });
