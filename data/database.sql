@@ -25,7 +25,7 @@ CREATE TABLE stations (
     capacity INT,                                    -- 容量
     is_open BOOLEAN DEFAULT TRUE,                    -- 是否营业
 
-    FOREIGN KEY (manager_id) REFERENCES station_manager(id)
+    FOREIGN KEY (manager_id) REFERENCES station_manager(id),
     CHECK (station_id REGEXP '^[0-9]{7}$')
 );
 

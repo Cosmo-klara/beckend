@@ -45,7 +45,7 @@ CREATE TABLE station_manager (
 
 ```sql
 CREATE TABLE stations (
-    station_id INT PRIMARY KEY AUTO_INCREMENT,       -- 驿站ID
+    station_id CHAR(7) PRIMARY KEY,                  -- 驿站ID
     manager_id CHAR(6) NOT NULL,                     -- 所属管理员
     station_name VARCHAR(100) NOT NULL,              -- 驿站名称
     address VARCHAR(255) NOT NULL,                   -- 驿站地址
@@ -54,7 +54,8 @@ CREATE TABLE stations (
     capacity INT,                                    -- 容量
     is_open BOOLEAN DEFAULT TRUE,                    -- 是否营业
 
-    FOREIGN KEY (manager_id) REFERENCES station_manager(id)
+    FOREIGN KEY (manager_id) REFERENCES station_manager(id),
+    CHECK (station_id REGEXP '^[0-9]{7}$')
 );
 ```
 
@@ -64,7 +65,7 @@ CREATE TABLE stations (
 CREATE TABLE comments (
     comment_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id CHAR(9) NOT NULL,
-    station_id INT NOT NULL,
+    station_id CHAR(7) NOT NULL,
     score TINYINT CHECK (score >= 1 AND score <= 5),
     comment_content TEXT,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -99,7 +100,7 @@ END;
 CREATE TABLE favorites (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id CHAR(9) NOT NULL,
-    station_id INT NOT NULL,
+    station_id CHAR(7) NOT NULL,
     favorite_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (user_id) REFERENCES users(id),
