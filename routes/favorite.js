@@ -32,13 +32,7 @@ router.post('/query', (req, res) => {
             return res.send({ message: 'No favorites' });
         }
         // 待测试，返回的 station_id 需要加载到本地变量（便于添加和删除）
-        res.send({
-            station_id: result[0],
-            station_name: result[1],
-            address: result[2],
-            score: result[3],
-            business_hours: result[4]
-        });
+        res.send({ favorates: result });
     });
 });
 
