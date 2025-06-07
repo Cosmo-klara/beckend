@@ -185,8 +185,22 @@
         ```
 
 + 添加
+    + 接口地址：`http://localhost:3000/favorite/add`
+    + 请求方法：POST
+    + 请求参数：
+        + `user_id`：用户ID，长度为9
+        + `station_id`：驿站ID
+    + 返回参数：
+        + `message`：成功为 "Favorite added successfully"
 
 + 移除
+    + 接口地址：`http://localhost:3000/favorite/remove`
+    + 请求方法：POST
+    + 请求参数：
+        + `user_id`：用户ID，长度为9
+        + `station_id`：驿站ID
+    + 返回参数：
+        + `message`：成功为 "Favorite removed successfully"
 
 
 
