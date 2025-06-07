@@ -40,7 +40,7 @@ router.post('/query', (req, res) => {
 router.post('/add', (req, res) => {
     const { user_id, station_id } = req.body;
 
-    const sql = `INSERT INTO favorites (user_id, station_id, favorite_time) VALUES (?, ?, NOW())`;
+    const sql = `INSERT INTO favorites (user_id, station_id) VALUES (?, ?)`;
 
     db.query(sql, [user_id, station_id], (err, result) => {
         if (err) {
