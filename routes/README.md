@@ -1,8 +1,8 @@
-### 接口说明
+## 接口说明
 
 > 需要增加接口功能可以直接联系我
 
-#### 使用范例：
+### 使用范例：
 
 > vue有一个uni的请求库应该是，我没用，前端对接的可以用AI或者自己研究一下，应该是可以用 `vite.config.js` 来做代理配置这样接口就能省略掉前面的网址了
 
@@ -81,14 +81,18 @@
 + 接口测试
 
     ```bash
-    curl -X POST -H "Content-Type: application/json" -d "{\"id\": \"111111111\", \"password\": \"cosmo\"}" http://localhost:3000/auth/login
+    curl -X POST -H "Content-Type: application/json" -d "{\"id\": \"100000000\", \"password\": \"0\"}" http://localhost:3000/auth/login
     ```
 
-    得到的结果为 {"message":"Login successful","user":{"id":111111111,"password":"cosmo"},"role":"users"}
+    得到的结果为 {"message":"Login successful","user":{"id":"100000000","user_name":"user_0","password":"0"},"role":"users"}
 
-#### 接口数据详细说明
+### 接口数据详细说明
 
-+ 登录接口
+#### 用户
+
+> 路由 `/auth`
+
++ 登录
     + 接口地址：` http://localhost:3000/auth/login`
     + 请求方法：POST
     + 请求参数：
@@ -99,7 +103,7 @@
         + `user`：用户信息，包含`id`和`password`
         + `role`：用户角色，"users"或"station_managers"
 
-+ 注册接口
++ 注册
     + 接口地址：`http://localhost:3000/auth/register`
     + 请求方法：POST
     + 请求参数：
@@ -109,7 +113,94 @@
     + 返回参数：
         + `message`：注册结果信息，成功为"Register successful"，失败为具体错误信息
 
-+ ..还没写文档
+
+#### 收藏
+
+> 路由 `/favorite`
+
++ 查询
+    + 接口地址：`http://localhost:3000/favorite/query`
+    + 请求方法：GET
+    + 请求参数：
+        + `user_id`：用户ID，长度为9
+    + 返回参数：
+        + `favorite_list`：用户收藏的驿站列表，包含`station_id`、`station_name`、`ddress`、`score`、`business_hours`、`capacity`、`is_open`
+
+    ```bash
+    curl -X POST -H "Content-Type: application/json" -d "{\"user_id\": \"100000001\"}" http://localhost:3000/favorite/query
+    ```
+
+    + 返回结果：(后续json不再展开)
+
+        ```json
+        {
+            "favorite_list": [
+                {
+                    "station_id": 1,
+                    "station_name": "南山驿站",
+                    "address": "深圳市南山区科技园",
+                    "score": "4.67",
+                    "business_hours": "08:00-20:00",
+                    "capacity": 100,
+                    "is_open": 1
+                },
+                {
+                    "station_id": 2,
+                    "station_name": "西湖驿站",
+                    "address": "杭州市西湖区龙井路",
+                    "score": "3.67",
+                    "business_hours": "06:00-17:00",
+                    "capacity": 90,
+                    "is_open": 0
+                },
+                {
+                    "station_id": 3,
+                    "station_name": "中关村驿站",
+                    "address": "北京市中关村南大街",
+                    "score": "3.60",
+                    "business_hours": "09:00-22:00",
+                    "capacity": 100,
+                    "is_open": 1
+                },
+                {
+                    "station_id": 4,
+                    "station_name": "浦东驿站",
+                    "address": "上海市浦东新区张江路",
+                    "score": "4.00",
+                    "business_hours": "08:00-20:00",
+                    "capacity": 150,
+                    "is_open": 1
+                },
+                {
+                    "station_id": 5,
+                    "station_name": "鼓楼驿站",
+                    "address": "南京市鼓楼区中山北路",
+                    "score": "4.27",
+                    "business_hours": "10:00-22:00",
+                    "capacity": 200,
+                    "is_open": 1
+                }
+            ]
+        }
+        ```
+
++ 添加
+
++ 移除
+
+
+
+
+#### 驿站
+
+
+
+
+
+
+
+
+
 
 
 

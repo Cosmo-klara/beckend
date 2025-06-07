@@ -5,18 +5,20 @@ const db = require('../db.js');
 // 查看，添加，删除
 // 数据库关联：收藏id（需要设置为自增），用户id，驿站id，收藏时间
 
-// 在选择用户收藏的时候触发，传入用户id查询收藏表
+// 在选择用户收藏的时候触发，传入用户id查询收藏表展示收藏的驿站信息
 router.post('/query', (req, res) => {
     const { user_id } = req.body;
 
     // 在收藏表favorites根据user_id查询对应全部条目，并根据其中的station_id在stations表中查询其所属驿站，返回驿站信息(驿站名称，地址，评分，营业时间)
     const sql = `
         SELECT
-            station_id,
+            s.station_id,
             s.station_name,
             s.address,
             s.score,
-            s.business_hours
+            s.business_hours,
+            s.capacity,
+            s.is_open
         FROM
             favorites f
         JOIN
@@ -32,7 +34,7 @@ router.post('/query', (req, res) => {
             return res.send({ message: 'No favorites' });
         }
         // 待测试，返回的 station_id 需要加载到本地变量（便于添加和删除）
-        res.send({ favorates: result });
+        res.send({ favorite_list: result });
     });
 });
 

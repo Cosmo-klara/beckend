@@ -10,7 +10,7 @@ npm install
 
 ### 2. 配置数据库
 
-**本地数据库部署（用于开发）：参见 [database.md](./data/database.md)**
+**本地数据库部署（用于开发）：参见 [data/README.md](./data/README.md)**
 
 > 在 db.js 中修改数据库连接信息的信息，如用户，密码及连接的数据库，理论上可以改成云端数据库
 

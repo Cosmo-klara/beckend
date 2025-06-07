@@ -1,8 +1,16 @@
 ## 数据库部署
 
-> 从零开始：在你的数据库编辑器(比如 Datagrip )中执行 [sql 文件](./data/database.sql)中的内容即可
+### 从零开始
 
-> 使用我创建的[测试数据(尚未创建hh)](./data/data.sql)：登录 MySQL，创建一个数据库并使用 ( use )，在终端中使用 `mysql -u root -p db_name < .sql文件路径` 导入数据库即可
+> 推荐使用，便于更改
+
+在你的数据库编辑器(比如 Datagrip )中执行 [database.sql 文件](./data/database.sql)中的内容创建数据库, 并使用 [test.sql 文件](./data/test.sql)中的内容插入数据
+
+### 直接导入数据库
+
+> 导出可能影响创建顺序之类的，格式也不好，不便于开发，不建议
+
+使用我创建( mysqldump 导出的)的 [data.sql](./data/data.sql)：登录 MySQL，创建一个数据库并使用 ( use )，在终端中使用 `mysql -u root -p db_name < .sql文件路径` 导入数据库即可
 
 ### 数据库详细设计
 
@@ -45,7 +53,7 @@ CREATE TABLE station_manager (
 
 ```sql
 CREATE TABLE stations (
-    station_id CHAR(7) PRIMARY KEY,                  -- 驿站ID
+    station_id INT PRIMARY KEY AUTO_INCREMENT,       -- 驿站ID
     manager_id CHAR(6) NOT NULL,                     -- 所属管理员
     station_name VARCHAR(100) NOT NULL,              -- 驿站名称
     address VARCHAR(255) NOT NULL,                   -- 驿站地址
@@ -54,8 +62,7 @@ CREATE TABLE stations (
     capacity INT,                                    -- 容量
     is_open BOOLEAN DEFAULT TRUE,                    -- 是否营业
 
-    FOREIGN KEY (manager_id) REFERENCES station_manager(id),
-    CHECK (station_id REGEXP '^[0-9]{7}$')
+    FOREIGN KEY (manager_id) REFERENCES station_manager(id)
 );
 ```
 
@@ -65,7 +72,7 @@ CREATE TABLE stations (
 CREATE TABLE comments (
     comment_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id CHAR(9) NOT NULL,
-    station_id CHAR(7) NOT NULL,
+    station_id INT NOT NULL,
     score TINYINT CHECK (score >= 1 AND score <= 5),
     comment_content TEXT,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -100,7 +107,7 @@ END;
 CREATE TABLE favorites (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id CHAR(9) NOT NULL,
-    station_id CHAR(7) NOT NULL,
+    station_id INT NOT NULL,
     favorite_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (user_id) REFERENCES users(id),
