@@ -82,6 +82,3 @@ CREATE TABLE waybills (
     FOREIGN KEY (receiver_id) REFERENCES users(id),
     FOREIGN KEY (current_station_id) REFERENCES stations(station_id)
 );
-
-
-

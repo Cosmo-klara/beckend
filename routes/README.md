@@ -216,9 +216,46 @@
 
 
 
+#### 运单
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d "{\"id\": \"100000001\"}" http://localhost:3000/waybill/history
+```
+
+```json
+
+```
 
 
+```bash
+curl -X POST -H "Content-Type: application/json" -d "{\"id\": \"100000003\"}" http://localhost:3000/waybill/not_shipped
+```
 
+```json
+
+```
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d "{\"id\": \"100000001\"}" http://localhost:3000/waybill/pending_pickup
+```
+
+```json
+
+```
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d "{\"id\": \"100000001\"}" http://localhost:3000/waybill/in_transit
+```
+
+```json
+
+```
+
+
+```js
+
+
+```
 
 
 

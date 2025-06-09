@@ -17,10 +17,11 @@
 目前的简略的 ER 模型 hh：
 
 ```bash
-users ───┬───< favorites >───┬─── stations ───< comments
-         │                   │
-         └───────────────────┘
-station_manager ───< stations
+station_manager ───< stations ───┬───< comments —— update_station_score
+                                 │
+users ───┬───< favorites >───────┘
+         │
+         └───< waybills
 ```
 
 #### 用户
@@ -143,16 +144,6 @@ CREATE TABLE waybills (
     FOREIGN KEY (current_station_id) REFERENCES stations(station_id)
 );
 ```
-
-**外部拿运单号的时候需要用 `LPAD(str,len,padstr)` 处理运单号为 4 位数字**
-
-#### 外部接口距离查询以及导航路线？
-
-+ 查询服务：数据库提供驿站地址传入外部接口，对接部分获取用户当前定位地址，使用外部接口获取用户与驿站的距离及导航路线数据，返回前端显示绘制。
-
-#### 发现
-
-显示高分驿站，点击详情触发距离查询接口获取距离信息
 
 
 
