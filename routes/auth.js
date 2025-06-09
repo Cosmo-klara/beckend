@@ -7,21 +7,19 @@ router.post('/login', (req, res) => {
     const { id, password } = req.body;
 
     let tableName;
-    if (id.length === 9) {
+    if (id.length === 9)
         tableName = 'users';
-    } else if (id.length === 6) {
+    else if (id.length === 6)
         tableName = 'station_managers';
-    } else {
+    else
         return res.status(400).send('Invalid ID');
-    }
 
     const sql = `SELECT * FROM ${tableName} WHERE id = ?`;
 
     db.query(sql, [id], (err, result) => {
         if (err) throw err;
-        if (result.length === 0) {
+        if (result.length === 0)
             return res.status(400).send('User not found');
-        }
         const user = result[0];
         if (user.password !== password)
             return res.status(400).send('Incorrect password');
@@ -42,9 +40,8 @@ router.post('/register', (req, res) => {
         if (id.length!== 6)
             return res.status(400).send('Invalid ID Length');
         tableName = 'station_managers';
-    }else {
+    }else
         return res.status(400).send('Invalid role');
-    }
 
     const sql = `INSERT INTO ${tableName} (id, user_name, password) VALUES (?, ?, ?)`;
 
