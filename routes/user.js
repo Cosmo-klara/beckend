@@ -14,7 +14,7 @@ router.post('/rename', (req, res) => {
         res.send({ message: '用户名更新成功' });
     })
 })
-    
+
 router.post('/reset_password', (req, res) => {
 
 })

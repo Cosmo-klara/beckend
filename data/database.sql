@@ -19,10 +19,14 @@ CREATE TABLE station_manager (
 CREATE TABLE stations (
     station_id INT PRIMARY KEY AUTO_INCREMENT,       -- 驿站ID
     manager_id CHAR(6) NOT NULL,                     -- 所属管理员
-    station_name VARCHAR(100) NOT NULL,              -- 驿站名称
+    station_name VARCHAR(50) NOT NULL,               -- 驿站名称
     address VARCHAR(255) NOT NULL,                   -- 驿站地址
-    score DECIMAL(3,2),                              -- 综合评分 (通过触发器维护)
+    coordinates POINT,                               -- 经纬度坐标
+    speed_score DECIMAL(3,2),                        -- 速度评分 (通过触发器维护)
+    service_score DECIMAL(3,2),                      -- 服务评分 (通过触发器维护)
+    price_score DECIMAL(3,2),                        -- 价格评分 (通过触发器维护)
     business_hours VARCHAR(50),                      -- 营业时间（如 08:00-22:00）
+    business_area VARCHAR(50),                       -- 营业区域
     capacity INT,                                    -- 容量
     is_open BOOLEAN DEFAULT TRUE,                    -- 是否营业
 
@@ -33,7 +37,9 @@ CREATE TABLE comments (
     comment_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id CHAR(9) NOT NULL,
     station_id INT NOT NULL,
-    score TINYINT CHECK (score >= 1 AND score <= 5),
+    speed_score TINYINT CHECK (speed_score >= 1 AND speed_score <= 5),
+    service_score TINYINT CHECK (service_score >= 1 AND service_score <= 5),
+    price_score TINYINT CHECK (price_score >= 1 AND price_score <= 5),
     comment_content TEXT,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -41,17 +47,28 @@ CREATE TABLE comments (
     FOREIGN KEY (station_id) REFERENCES stations(station_id)
 );
 
-CREATE TRIGGER update_station_score
+CREATE TRIGGER update_station_scores
 AFTER INSERT ON comments
 FOR EACH ROW
 BEGIN
     UPDATE stations
-    SET score = (
-        SELECT AVG(score)
-        FROM comments
-        WHERE station_id = NEW.station_id
-    )
+    SET
+        speed_score = (SELECT AVG(speed_score) FROM comments WHERE station_id = NEW.station_id),
+        service_score = (SELECT AVG(service_score) FROM comments WHERE station_id = NEW.station_id),
+        price_score = (SELECT AVG(price_score) FROM comments WHERE station_id = NEW.station_id)
     WHERE station_id = NEW.station_id;
+END;
+
+CREATE TRIGGER update_station_scores_on_delete
+AFTER DELETE ON comments
+FOR EACH ROW
+BEGIN
+    UPDATE stations
+    SET
+        speed_score = (SELECT AVG(speed_score) FROM comments WHERE station_id = OLD.station_id),
+        service_score = (SELECT AVG(service_score) FROM comments WHERE station_id = OLD.station_id),
+        price_score = (SELECT AVG(price_score) FROM comments WHERE station_id = OLD.station_id)
+    WHERE station_id = OLD.station_id;
 END;
 
 CREATE TABLE favorites (
@@ -62,7 +79,7 @@ CREATE TABLE favorites (
 
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (station_id) REFERENCES stations(station_id),
-    UNIQUE (user_id, station_id)  -- 防止重复收藏
+    UNIQUE (user_id, station_id)
 );
 
 CREATE TABLE waybills (

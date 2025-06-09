@@ -55,19 +55,19 @@ CREATE TABLE station_manager (
 
 > 提供驿站信息查询接口
 > 提供名字查询驿站接口（匹配包含）
-> 营业范围
 
 ```sql
 CREATE TABLE stations (
     station_id INT PRIMARY KEY AUTO_INCREMENT,       -- 驿站ID
     manager_id CHAR(6) NOT NULL,                     -- 所属管理员
-    station_name VARCHAR(100) NOT NULL,              -- 驿站名称
+    station_name VARCHAR(50) NOT NULL,              -- 驿站名称
     address VARCHAR(255) NOT NULL,                   -- 驿站地址
     coordinates POINT,                               -- 经纬度坐标
     speed_score DECIMAL(3,2),                        -- 速度评分 (通过触发器维护)
     service_score DECIMAL(3,2),                      -- 服务评分 (通过触发器维护)
     price_score DECIMAL(3,2),                        -- 价格评分 (通过触发器维护)
     business_hours VARCHAR(50),                      -- 营业时间（如 08:00-22:00）
+    business_area VARCHAR(50),                       -- 营业区域
     capacity INT,                                    -- 容量
     is_open BOOLEAN DEFAULT TRUE,                    -- 是否营业
 
@@ -96,43 +96,28 @@ CREATE TABLE comments (
 + 评分触发器(速度、服务、价格)
 
 ```sql
-CREATE TRIGGER update_station_speed_score
+CREATE TRIGGER update_station_scores
 AFTER INSERT ON comments
 FOR EACH ROW
 BEGIN
-  UPDATE stations
-  SET speed_score = (
-      SELECT AVG(speed_score)
-      FROM comments
-      WHERE station_id = NEW.station_id
-  )
-  WHERE station_id = NEW.station_id;
+    UPDATE stations
+    SET
+        speed_score = (SELECT AVG(speed_score) FROM comments WHERE station_id = NEW.station_id),
+        service_score = (SELECT AVG(service_score) FROM comments WHERE station_id = NEW.station_id),
+        price_score = (SELECT AVG(price_score) FROM comments WHERE station_id = NEW.station_id)
+    WHERE station_id = NEW.station_id;
 END;
 
-CREATE TRIGGER update_station_service_score
-AFTER INSERT ON comments
+CREATE TRIGGER update_station_scores_on_delete
+AFTER DELETE ON comments
 FOR EACH ROW
 BEGIN
-  UPDATE stations
-  SET service_score = (
-      SELECT AVG(service_score)
-      FROM comments
-      WHERE station_id = NEW.station_id
-  )
-  WHERE station_id = NEW.station_id;
-END;
-
-CREATE TRIGGER update_station_price_score
-AFTER INSERT ON comments
-FOR EACH ROW
-BEGIN
-  UPDATE stations
-  SET price_score = (
-      SELECT AVG(price_score)
-      FROM comments
-      WHERE station_id = NEW.station_id
-  )
-  WHERE station_id = NEW.station_id;
+    UPDATE stations
+    SET
+        speed_score = (SELECT AVG(speed_score) FROM comments WHERE station_id = OLD.station_id),
+        service_score = (SELECT AVG(service_score) FROM comments WHERE station_id = OLD.station_id),
+        price_score = (SELECT AVG(price_score) FROM comments WHERE station_id = OLD.station_id)
+    WHERE station_id = OLD.station_id;
 END;
 ```
 
