@@ -1,138 +1,73 @@
-### 数据库详细设计
+## 数据库详细设计
 
 ![](./img/database.png)
 
-#### 用户
+### Table: users 用户
 
-+ 用户表 users 表
+| Field | Type | Null | Key | Default | Extra |
+| --- | --- | --- | --- | --- | --- |
+| id | char(9) | NO | PRI | NULL |  |
+| user_name | varchar(50) | NO | UNI | NULL |  |
+| password | varchar(255) | NO |  | NULL |  |
+| address_list | json | YES |  | NULL |  |
 
-```sql
-CREATE TABLE users (
-    id CHAR(9) PRIMARY KEY,                    -- 用户id
-    user_name VARCHAR(50) NOT NULL UNIQUE,     -- 用户名
-    password VARCHAR(255) NOT NULL,            -- 密码
-    address_list JSON,                         -- 地址列表
-    CHECK (id REGEXP '^[0-9]{9}$')             -- 限制只能为9位数字
-);
-```
+### Table: station_managers 管理员
 
-+ 管理员 station_manager 表
+| Field | Type | Null | Key | Default | Extra |
+| --- | --- | --- | --- | --- | --- |
+| id | char(6) | NO | PRI | NULL |  |
+| user_name | varchar(50) | NO | UNI | NULL |  |
+| password | varchar(255) | NO |  | NULL |  |
 
-```sql
-CREATE TABLE station_managers (
-    id CHAR(6) PRIMARY KEY,                    -- 管理员ID
-    user_name VARCHAR(50) NOT NULL UNIQUE,  -- 管理员用户名
-    password VARCHAR(255) NOT NULL,            -- 密码
-    CHECK (id REGEXP '^[0-9]{6}$')
-);
-```
+### Table: stations 驿站
 
-#### 驿站
+| Field | Type | Null | Key | Default | Extra |
+| --- | --- | --- | --- | --- | --- |
+| station_id | int | NO | PRI | NULL | auto_increment |
+| manager_id | char(6) | NO | MUL | NULL |  |
+| station_name | varchar(50) | NO |  | NULL |  |
+| address | varchar(255) | NO |  | NULL |  |
+| coordinates | point | YES |  | NULL |  |
+| speed_score | decimal(3,1) | YES |  | NULL |  |
+| service_score | decimal(3,1) | YES |  | NULL |  |
+| price_score | decimal(3,1) | YES |  | NULL |  |
+| business_hours | varchar(50) | YES |  | NULL |  |
+| business_area | varchar(50) | YES |  | NULL |  |
+| capacity | int | YES |  | NULL |  |
+| is_open | tinyint(1) | YES |  | 1 |  |
 
-+ 驿站表
+### Table: comments 评论
 
-```sql
-CREATE TABLE stations (
-    station_id INT PRIMARY KEY AUTO_INCREMENT,       -- 驿站ID
-    manager_id CHAR(6) NOT NULL,                     -- 所属管理员
-    station_name VARCHAR(50) NOT NULL,               -- 驿站名称
-    address VARCHAR(255) NOT NULL,                   -- 驿站地址
-    coordinates POINT,                               -- 经纬度坐标
-    speed_score DECIMAL(3,1),                        -- 速度评分 (通过触发器维护)
-    service_score DECIMAL(3,1),                      -- 服务评分 (通过触发器维护)
-    price_score DECIMAL(3,1),                        -- 价格评分 (通过触发器维护)
-    business_hours VARCHAR(50),                      -- 营业时间（如 08:00-22:00）
-    business_area VARCHAR(50),                       -- 营业区域
-    capacity INT,                                    -- 容量
-    is_open BOOLEAN DEFAULT TRUE,                    -- 是否营业
+| Field | Type | Null | Key | Default | Extra |
+| --- | --- | --- | --- | --- | --- |
+| comment_id | int | NO | PRI | NULL | auto_increment |
+| user_id | char(9) | NO | MUL | NULL |  |
+| station_id | int | NO | MUL | NULL |  |
+| speed_score | tinyint | YES |  | NULL |  |
+| service_score | tinyint | YES |  | NULL |  |
+| price_score | tinyint | YES |  | NULL |  |
+| comment_content | text | YES |  | NULL |  |
+| timestamp | timestamp | YES |  | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
 
-    FOREIGN KEY (manager_id) REFERENCES station_manager(id)
-);
-```
+### Table: favorites 收藏
 
-+ 评价表
+| Field | Type | Null | Key | Default | Extra |
+| --- | --- | --- | --- | --- | --- |
+| id | int | NO | PRI | NULL | auto_increment |
+| user_id | char(9) | NO | MUL | NULL |  |
+| station_id | int | NO | MUL | NULL |  |
+| favorite_time | timestamp | YES |  | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
 
-```sql
-CREATE TABLE comments (
-    comment_id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id CHAR(9) NOT NULL,
-    station_id INT NOT NULL,
-    speed_score TINYINT CHECK (speed_score >= 1 AND speed_score <= 5),
-    service_score TINYINT CHECK (service_score >= 1 AND service_score <= 5),
-    price_score TINYINT CHECK (price_score >= 1 AND price_score <= 5),
-    comment_content TEXT,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+### Table: waybills 运单
 
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (station_id) REFERENCES stations(station_id)
-);
-```
-
-+ 评分触发器(速度、服务、价格)
-
-```sql
-CREATE TRIGGER update_station_scores
-AFTER INSERT ON comments
-FOR EACH ROW
-BEGIN
-    UPDATE stations
-    SET
-        speed_score = (SELECT AVG(speed_score) FROM comments WHERE station_id = NEW.station_id),
-        service_score = (SELECT AVG(service_score) FROM comments WHERE station_id = NEW.station_id),
-        price_score = (SELECT AVG(price_score) FROM comments WHERE station_id = NEW.station_id)
-    WHERE station_id = NEW.station_id;
-END;
-
-CREATE TRIGGER update_station_scores_on_delete
-AFTER DELETE ON comments
-FOR EACH ROW
-BEGIN
-    UPDATE stations
-    SET
-        speed_score = (SELECT AVG(speed_score) FROM comments WHERE station_id = OLD.station_id),
-        service_score = (SELECT AVG(service_score) FROM comments WHERE station_id = OLD.station_id),
-        price_score = (SELECT AVG(price_score) FROM comments WHERE station_id = OLD.station_id)
-    WHERE station_id = OLD.station_id;
-END;
-```
-
-#### 收藏
-
-+ 收藏表
-
-```sql
-CREATE TABLE favorites (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id CHAR(9) NOT NULL,
-    station_id INT NOT NULL,
-    favorite_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (station_id) REFERENCES stations(station_id),
-    UNIQUE (user_id, station_id)  -- 防止重复收藏
-);
-```
-
-#### 运单 Waybill
-
-+ 运单表
-
-```sql
-CREATE TABLE waybills (
-    tracking_number INT PRIMARY KEY AUTO_INCREMENT,        -- 运单号（4位数字，系统自增）
-    send_time DATETIME NOT NULL,                           -- 发出时间（格式 YYYY-MM-DD HH:MM）
-    receive_time DATETIME DEFAULT NULL,                    -- 签收时间（可为空）
-    origin CHAR(100) NOT NULL,                             -- 出发地
-    destination CHAR(100) NOT NULL,                        -- 目的地
-
-    status CHAR(2) NOT NULL CHECK (status IN ('00','01','10','11')), -- 状态编码(00：未发货，01：待取件，10：运输中，11：已签收)
-
-    sender_id CHAR(9) NOT NULL,                            -- 寄件人ID（用户）
-    receiver_id CHAR(9) NOT NULL,                          -- 收件人ID（用户）
-    current_station_id INT NOT NULL,                       -- 当前驿站ID
-
-    FOREIGN KEY (sender_id) REFERENCES users(id),
-    FOREIGN KEY (receiver_id) REFERENCES users(id),
-    FOREIGN KEY (current_station_id) REFERENCES stations(station_id)
-);
-```
+| Field | Type | Null | Key | Default | Extra |
+| --- | --- | --- | --- | --- | --- |
+| tracking_number | int | NO | PRI | NULL | auto_increment |
+| send_time | datetime | NO |  | NULL |  |
+| receive_time | datetime | YES |  | NULL |  |
+| origin | char(100) | NO |  | NULL |  |
+| destination | char(100) | NO |  | NULL |  |
+| status | char(2) | NO |  | NULL |  |
+| sender_id | char(9) | NO | MUL | NULL |  |
+| receiver_id | char(9) | NO | MUL | NULL |  |
+| current_station_id | int | NO | MUL | NULL |  |
