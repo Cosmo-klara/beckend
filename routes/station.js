@@ -21,7 +21,7 @@ router.post('/query', (req, res) => {
     });
 });
 
-
+// 加一个营业范围
 // 添加驿站，传入 manager_id, name, address, businessHours, capacity, isOpen等参数，只有station_id自增不需要传入，
 router.post('/add', (req, res) => {
     const { manager_id, station_name, address, business_hours, capacity, is_open } = req.body;
@@ -54,9 +54,25 @@ router.post('/modify', (req, res) => {
     });
 });
 
+router.post('/query_by_speed', (req, res) => {
+
+});
 
 
+router.post('/query_by_service', (req, res) => {
 
+});
+
+
+router.post('/query_by_price', (req, res) => {
+
+});
+
+
+// 计算一个加权的评分，初步定为 速度0.4 服务0.3 价格0.3
+router.post('/query_by_avg', (req, res) => {
+
+});
 
 
 

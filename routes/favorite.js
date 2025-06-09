@@ -12,7 +12,9 @@ router.post('/query', (req, res) => {
             s.station_id,
             s.station_name,
             s.address,
-            s.score,
+            s.speed_score,
+            s.service_score,
+            s.price_score,
             s.business_hours,
             s.capacity,
             s.is_open

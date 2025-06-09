@@ -2,6 +2,23 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db.js');
 
+router.post('/rename', (req, res) => {
+    const { id, user_name } = req.body;
+    const sql = `UPDATE users SET user_name =? WHERE id =?`;
+
+    db.query(sql, [user_name, id], (err, result) => {
+        if (err) throw err;
+        if (result.affectedRows === 0) {
+            return res.status(404).send({ message: '用户不存在或更新失败' });
+        }
+        res.send({ message: '用户名更新成功' });
+    })
+})
+    
+router.post('/reset_password', (req, res) => {
+
+})
+
 router.post('/query_address', (req, res) => {
     const { id } = req.body;
 

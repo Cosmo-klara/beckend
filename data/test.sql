@@ -15,6 +15,7 @@ INSERT INTO station_manager (id, manager_name, password) VALUES
 ('200004', 'admin_4', 'admin_pwd_4');
 
 -- 驿站
+-- coordinates 需要添加
 INSERT INTO stations (manager_id, station_name, address, business_hours, capacity, is_open) VALUES
 ('200000', '南山驿站', '深圳市南山区科技园', '08:00-20:00', 100, TRUE),
 ('200001', '西湖驿站', '杭州市西湖区龙井路', '06:00-17:00', 90, FALSE),
@@ -40,7 +41,7 @@ INSERT INTO favorites (user_id, station_id) VALUES
 ('100000001', 5),
 ('100000004', 5);
 
-INSERT INTO comments (user_id, station_id, score, comment_content, timestamp) VALUES
+INSERT INTO comments (user_id, station_id, speed_score, service_score, price_score, comment_content, timestamp) VALUES
 ('100000004', 5, 5, '推荐', '2025-05-21 13:02:40'),
 ('100000003', 5, 4, '不错', '2025-05-14 13:02:40'),
 ('100000004', 4, 3, '推荐', '2025-05-25 13:02:40'),
