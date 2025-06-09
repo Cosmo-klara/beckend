@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db.js');
 
+// > 提供名字查询驿站接口（匹配包含）
+
 router.post('/query', (req, res) => {
     const { manager_id } = req.body;
 

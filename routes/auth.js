@@ -54,7 +54,7 @@ router.post('/register', (req, res) => {
                 return res.status(400).send('ID already exists');
             throw err;
         }
-        res.send({ message: 'Register successful' })
+        res.send({ message: 'Register successful', userId: result.insertId })
     });
 });
 

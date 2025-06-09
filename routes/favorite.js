@@ -4,7 +4,7 @@ const db = require('../db.js');
 
 // 在选择用户收藏的时候触发，传入用户id查询收藏表展示收藏的驿站信息
 router.post('/query', (req, res) => {
-    const { user_id } = req.body;
+    const { userId } = req.body;
 
     // 在收藏表favorites根据user_id查询对应全部条目，并根据其中的station_id在stations表中查询其所属驿站，返回驿站信息(驿站名称，地址，评分，营业时间)
     const sql = `
@@ -16,7 +16,6 @@ router.post('/query', (req, res) => {
             s.service_score,
             s.price_score,
             s.business_hours,
-            s.capacity,
             s.is_open
         FROM
             favorites f
@@ -26,7 +25,7 @@ router.post('/query', (req, res) => {
             f.user_id = ?
     `;
 
-    db.query(sql, [user_id], (err, result) => {
+    db.query(sql, [userId], (err, result) => {
         if (err) throw err;
         if (result.length === 0) {
             // 返回无收藏
@@ -39,11 +38,11 @@ router.post('/query', (req, res) => {
 
 // 添加收藏
 router.post('/add', (req, res) => {
-    const { user_id, station_id } = req.body;
+    const { userId, stationId } = req.body;
 
     const sql = `INSERT INTO favorites (user_id, station_id) VALUES (?, ?)`;
 
-    db.query(sql, [user_id, station_id], (err, result) => {
+    db.query(sql, [userId, stationId], (err, result) => {
         if (err) {
             console.error('Error adding favorite:', err);
             return res.status(500).send({ message: '添加收藏失败' });
@@ -54,11 +53,11 @@ router.post('/add', (req, res) => {
 
 // 移除收藏
 router.post('/remove', (req, res) => {
-    const { user_id, station_id } = req.body;
+    const { userId, stationId } = req.body;
 
     const sql = `DELETE FROM favorites WHERE user_id =? AND station_id =?`;
 
-    db.query(sql, [user_id, station_id], (err, result) => {
+    db.query(sql, [userId, stationId], (err, result) => {
         if (err) {
             console.error('Error removing favorite:', err);
             return res.status(500).send({ message: '移除收藏失败' });

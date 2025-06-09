@@ -53,9 +53,6 @@ CREATE TABLE station_manager (
 
 + 驿站表
 
-> 提供驿站信息查询接口
-> 提供名字查询驿站接口（匹配包含）
-
 ```sql
 CREATE TABLE stations (
     station_id INT PRIMARY KEY AUTO_INCREMENT,       -- 驿站ID
@@ -161,8 +158,3 @@ CREATE TABLE waybills (
     FOREIGN KEY (current_station_id) REFERENCES stations(station_id)
 );
 ```
-
-
-
-
-
