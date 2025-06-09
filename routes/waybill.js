@@ -18,6 +18,8 @@ router.post('/not_shipped', (req, res) => {
             console.error(err);
             return res.status(500).send({ message: '查询失败' });
         }
+        if(result.length === 0)
+            return res.status(404).send({ message: '未找到该运单' });
         res.send({ waybills: result });
     });
 });
@@ -39,7 +41,10 @@ router.post('/pending_pickup', (req, res) => {
             console.error(err);
             return res.status(500).send({ message: '查询失败' });
         }
+        if(result.length === 0)
+            return res.status(404).send({ message: '未找到该运单' });
         res.send({ waybills: result });
+
     });
 });
 
@@ -59,6 +64,8 @@ router.post('/in_transit', (req, res) => {
             console.error(err);
             return res.status(500).send({ message: '查询失败' });
         }
+        if(result.length === 0) 
+            return res.status(404).send({ message: '未找到该运单' });
         res.send({ waybills: result });
     });
 });
@@ -79,6 +86,9 @@ router.post('/history', (req, res) => {
             console.error(err);
             return res.status(500).send({ message: '查询失败' });
         }
+        if(result.length === 0) 
+            return res.status(404).send({ message: '未找到该运单' });
+
         res.send({ waybills: result });
     });
 });
@@ -108,9 +118,8 @@ router.post('/query', (req, res) => {
             console.error('查询错误:', err);
             return res.status(500).send({ message: '查询失败' });
         }
-        if (result.length === 0) {
+        if (result.length === 0)
             return res.status(404).send({ message: '未找到匹配的运单' });
-        }
         res.send({ waybills: result });
     });
 });
