@@ -63,9 +63,9 @@ CREATE TABLE stations (
     station_name VARCHAR(50) NOT NULL,              -- 驿站名称
     address VARCHAR(255) NOT NULL,                   -- 驿站地址
     coordinates POINT,                               -- 经纬度坐标
-    speed_score DECIMAL(3,2),                        -- 速度评分 (通过触发器维护)
-    service_score DECIMAL(3,2),                      -- 服务评分 (通过触发器维护)
-    price_score DECIMAL(3,2),                        -- 价格评分 (通过触发器维护)
+    speed_score DECIMAL(3,1),                        -- 速度评分 (通过触发器维护)
+    service_score DECIMAL(3,1),                      -- 服务评分 (通过触发器维护)
+    price_score DECIMAL(3,1),                        -- 价格评分 (通过触发器维护)
     business_hours VARCHAR(50),                      -- 营业时间（如 08:00-22:00）
     business_area VARCHAR(50),                       -- 营业区域
     capacity INT,                                    -- 容量
