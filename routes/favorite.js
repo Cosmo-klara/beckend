@@ -29,7 +29,7 @@ router.post('/query', (req, res) => {
         if (err) throw err;
         if (result.length === 0) {
             // 返回无收藏
-            return res.send({ message: '收藏为空' });
+            return res.status(404).send({ message: '收藏为空' });
         }
         // 待测试，返回的 station_id 需要加载到本地变量（便于添加和删除）
         res.send({ favorite_list: result });
@@ -62,9 +62,12 @@ router.post('/remove', (req, res) => {
             console.error('Error removing favorite:', err);
             return res.status(500).send({ message: '移除收藏失败' });
         }
+        if (result.affectedRows === 0) {
+            return res.status(404).send({ message: '未找到该收藏记录' });
+        }
         res.send({ message: '成功移除收藏'});
-    })
-})
+    });
+});
 
 
 module.exports = router;
