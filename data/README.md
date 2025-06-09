@@ -41,7 +41,7 @@ CREATE TABLE users (
 + 管理员 station_manager 表
 
 ```sql
-CREATE TABLE station_manager (
+CREATE TABLE station_managers (
     id CHAR(6) PRIMARY KEY,                    -- 管理员ID
     manager_name VARCHAR(50) NOT NULL UNIQUE,  -- 管理员用户名
     password VARCHAR(255) NOT NULL,            -- 密码

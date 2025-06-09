@@ -9,7 +9,7 @@ CREATE TABLE users (
     CHECK (id REGEXP '^[0-9]{9}$')             -- 限制只能为9位数字
 );
 
-CREATE TABLE station_manager (
+CREATE TABLE station_managers (
     id CHAR(6) PRIMARY KEY,                    -- 管理员ID
     manager_name VARCHAR(50) NOT NULL UNIQUE,  -- 管理员用户名
     password VARCHAR(255) NOT NULL,            -- 密码
