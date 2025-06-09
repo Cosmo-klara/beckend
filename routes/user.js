@@ -3,10 +3,10 @@ const router = express.Router();
 const db = require('../db.js');
 
 router.post('/rename', (req, res) => {
-    const { id, user_name } = req.body;
+    const { userId, user_name } = req.body;
     const sql = `UPDATE users SET user_name =? WHERE id =?`;
 
-    db.query(sql, [user_name, id], (err, result) => {
+    db.query(sql, [user_name, userId], (err, result) => {
         if (err) throw err;
         if (result.affectedRows === 0) {
             return res.status(404).send({ message: '用户不存在或更新失败' });
@@ -16,31 +16,46 @@ router.post('/rename', (req, res) => {
 })
 
 router.post('/reset_password', (req, res) => {
+    const { userId, new_password } = req.body;
+    if (!userId || !new_password)
+        return res.status(400).send({ message: '缺少 userId 或 new_password 参数' });
 
-})
+    const checkSql = `SELECT * FROM users WHERE id = ?`;
+    db.query(checkSql, [userId], (err, result) => {
+        if (err) return res.status(500).send({ message: '数据库错误' });
+        if (result.length === 0)
+            return res.status(404).send({ message: '用户不存在' });
+
+        const updateSql = `UPDATE users SET password = ? WHERE id = ?`;
+        db.query(updateSql, [new_password, userId], (err, result) => {
+            if (err) return res.status(500).send({ message: '密码更新失败' });
+            res.send({ message: '密码重置成功' });
+        });
+    });
+});
 
 router.post('/query_address', (req, res) => {
-    const { id } = req.body;
+    const { userId } = req.body;
 
-    const sql = `SELECT JSON_PRETTY(address) FROM users WHERE id = ?`;
+    const sql = `SELECT address_list FROM users WHERE id = ?`;
 
-    db.query(sql, [id], (err, result) => {
+    db.query(sql, [userId], (err, result) => {
         if (err) throw err;
         if (result.length === 0) {
             return res.status(400).send({ message: '地址为空' });
         }
-        res.send({ address: result[0] });
+        res.send({ address: result });
     });
 });
 
 // 一次添加一条
 router.post('/add_address', (req, res) => {
-    const { id, address } = req.body;
+    const { userId, address } = req.body;
 
     const sql = `
         UPDATE users
-        SET address = JSON_ARRAY_APPEND(
-            IFNULL(address, JSON_ARRAY()), '$',
+        SET address_list = JSON_ARRAY_APPEND(
+            IFNULL(address_list, JSON_ARRAY()), '$',
             CAST(? AS JSON)
         )
         WHERE id = ?
@@ -48,7 +63,7 @@ router.post('/add_address', (req, res) => {
 
     const jsonAddress = JSON.stringify(address);  // 确保 address 是 JSON 字符串
 
-    db.query(sql, [jsonAddress, id], (err, result) => {
+    db.query(sql, [jsonAddress, userId], (err, result) => {
         if (err) {
             console.error('Error adding address:', err);
             return res.status(500).send({ message: '添加地址失败' });
@@ -60,16 +75,16 @@ router.post('/add_address', (req, res) => {
 });
 
 router.post('/delete_address', (req, res) => {
-    const { id, index } = req.body;
+    const { userId, index } = req.body;
 
     const sql = `
         UPDATE users
-        SET address = JSON_REMOVE(address, CONCAT('$[', ?, ']'))
+        SET address_list = JSON_REMOVE(address_list, CONCAT('$[', ?, ']'))
         WHERE id = ?
-        AND JSON_LENGTH(address) > ?
+        AND JSON_LENGTH(address_list) > ?
     `;
 
-    db.query(sql, [index, id, index], (err, result) => {
+    db.query(sql, [index, userId, index], (err, result) => {
         if (err) {
             console.error('Error deleting address:', err);
             return res.status(500).send({ message: '删除地址失败' });
