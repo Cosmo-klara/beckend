@@ -8,6 +8,7 @@ const authRoutes = require('./routes/auth');
 const favoriteRoutes = require('./routes/favorite');
 const stationRoutes = require('./routes/station');
 const userRoutes = require('./routes/user');
+const managerRoutes = require('./routes/manager');
 const commentRoutes = require('./routes/comment');
 const waybillRoutes = require('./routes/waybill');
 
@@ -21,6 +22,7 @@ app.use('/auth', authRoutes);
 app.use('/favorite', favoriteRoutes);
 app.use('/station', stationRoutes);
 app.use('/user', userRoutes);
+app.use('/manager', managerRoutes);
 app.use('/comment', commentRoutes);
 app.use('/waybill', waybillRoutes);
 

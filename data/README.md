@@ -57,7 +57,7 @@ CREATE TABLE station_manager (
 CREATE TABLE stations (
     station_id INT PRIMARY KEY AUTO_INCREMENT,       -- 驿站ID
     manager_id CHAR(6) NOT NULL,                     -- 所属管理员
-    station_name VARCHAR(50) NOT NULL,              -- 驿站名称
+    station_name VARCHAR(50) NOT NULL,               -- 驿站名称
     address VARCHAR(255) NOT NULL,                   -- 驿站地址
     coordinates POINT,                               -- 经纬度坐标
     speed_score DECIMAL(3,1),                        -- 速度评分 (通过触发器维护)
