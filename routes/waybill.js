@@ -42,6 +42,9 @@ router.post('/pending_pickup', (req, res) => {
             console.error(err);
             return res.status(500).send({ message: '查询失败' });
         }
+        if(result.length === 0) {
+            return res.status(404).send({ message: '未找到该运单' });
+        }
         res.send(result);
     });
 });
@@ -62,6 +65,9 @@ router.post('/in_transit', (req, res) => {
             console.error(err);
             return res.status(500).send({ message: '查询失败' });
         }
+        if(result.length === 0) {
+            return res.status(404).send({ message: '未找到该运单' });
+        }
         res.send(result);
     });
 });
@@ -81,6 +87,9 @@ router.post('/history', (req, res) => {
         if (err) {
             console.error(err);
             return res.status(500).send({ message: '查询失败' });
+        }
+        if(result.length === 0) {
+            return res.status(404).send({ message: '未找到该运单' });
         }
         res.send({ history_waybills: result });
     });
