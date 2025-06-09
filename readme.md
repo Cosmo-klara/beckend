@@ -10,20 +10,7 @@ npm install
 
 ### 2. 配置数据库
 
-**本地数据库部署（用于开发）：参见 [data/README.md](./data/README.md)**
-
-> 在 db.js 中修改数据库连接信息的信息，如用户，密码及连接的数据库，理论上可以改成云端数据库
-
-```javascript
-    const pool = mysql.createConnection({
-        host: 'localhost',
-        port: 3306,
-        user: 'root',
-        password: 'your_password',
-        database: 'your_database_name',
-        charset: 'utf8'
-    });
-```
+**本地数据库部署（用于开发）：参见 [data/README.md](data/README.md)**
 
 ### 3. 启动服务
 
@@ -33,6 +20,6 @@ npm install
 node server.js
 ```
 
-### 4. [接口文档](./routes/README.md)
+### 4. [接口文档](doc/Interface.md)
 
-详细的接口返回数据运行 [README.ipynb](./routes/README.ipynb) 即可获取
+详细的接口返回数据，运行 doc 文件下 [Interface_test.ipynb](doc/Interface_test.ipynb) 即可获取

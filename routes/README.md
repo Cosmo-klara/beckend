@@ -2,11 +2,11 @@
 
 > 用于展示
 
-[接口文档](接口文档.md)
+[接口文档](../doc/Interface.md)
 
 ## 接口测试及详细数据格式查看
 
-[可运行文档](README.ipynb)
+[Interface_test.ipynb](../doc/Interface_test.ipynb)
 
 ## 接口对接说明
 

@@ -94,6 +94,8 @@ router.post('/add', (req, res) => {
             console.error('添加失败:', err);
             return res.status(500).send({ message: '添加评价失败' });
         }
+        if (result.affectedRows === 0)
+            return res.status(404).send({ message: '找不到该驿站' });
         res.send({ message: '评价添加成功', commentId: result.insertId });
     });
 });
@@ -117,11 +119,8 @@ router.post('/delete', (req, res) => {
             console.error('删除失败:', err);
             return res.status(500).send({ message: '删除失败' });
         }
-
-        if (result.affectedRows === 0) {
-            return res.status(404).send({ message: '找不到该评论或无权限删除' });
-        }
-
+        if (result.affectedRows === 0)
+            return res.status(404).send({ message: '找不到该评论' });
         res.send({ message: '评论删除成功' });
     });
 });
