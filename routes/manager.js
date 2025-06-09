@@ -2,11 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db.js');
 
-
-
-// > 提供名字查询驿站接口（匹配包含）
-
-
 router.post('/query', (req, res) => {
     const { managerId } = req.body;
     const sql = `SELECT * FROM stations WHERE manager_id = ?`;
