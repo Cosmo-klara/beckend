@@ -1,15 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db.js');
-// 需求
-// 查看，修改，添加
-// 数据库关联：管理者id
 
-// 在选择用户收藏的时候触发，传入用户id查询收藏表
 router.post('/query', (req, res) => {
     const { manager_id } = req.body;
 
-    // 在收藏表favorites根据user_id查询对应全部条目，并根据其中的station_id在stations表中查询其所属驿站，返回驿站信息(驿站名称，地址，评分，营业时间)
+    // 根据manager_id查询对应全部条目，并根据其中的station_id在stations表中查询其所属驿站，返回驿站信息(驿站名称，地址，评分，营业时间)
     const sql = `
         SELECT * FROM stations WHERE manager_id = ?
     `;
@@ -41,7 +37,7 @@ router.post('/add', (req, res) => {
 });
 
 // 修改驿站信息，传入 station_id, name, address, businessHours, capacity, isOpen等参数
-// 这里感觉需要前端来处理传入的默认情况，也就是如果不修改就传入旧的信息（之前查询到的）
+// 这里感觉需要前端来处理传入的默认情况，也就是如果不修改的部分就就传入旧的信息（之前查询到的），用个form，默认值就是之前查询到的信息
 router.post('/modify', (req, res) => {
     const { station_id, station_name, address, business_hours, capacity, is_open } = req.body;
 

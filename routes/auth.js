@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db.js');
 
+// 建议在登录后将用户信息缓存到变量中传递，用于其他查询传参
 router.post('/login', (req, res) => {
     const { id, password } = req.body;
 
@@ -28,7 +29,6 @@ router.post('/login', (req, res) => {
         res.send({ message: 'Login successful', user, role: tableName });
     });
 });
-
 
 router.post('/register', (req, res) => {
     const { role, id, password } = req.body;

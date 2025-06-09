@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db.js');
-// 需求
-// 查看，添加，删除
-// 数据库关联：收藏id（需要设置为自增），用户id，驿站id，收藏时间
 
 // 在选择用户收藏的时候触发，传入用户id查询收藏表展示收藏的驿站信息
 router.post('/query', (req, res) => {
@@ -31,7 +28,7 @@ router.post('/query', (req, res) => {
         if (err) throw err;
         if (result.length === 0) {
             // 返回无收藏
-            return res.send({ message: 'No favorites' });
+            return res.send({ message: '收藏为空' });
         }
         // 待测试，返回的 station_id 需要加载到本地变量（便于添加和删除）
         res.send({ favorite_list: result });
@@ -47,9 +44,9 @@ router.post('/add', (req, res) => {
     db.query(sql, [user_id, station_id], (err, result) => {
         if (err) {
             console.error('Error adding favorite:', err);
-            return res.status(500).send({ message: 'Failed to add favorite' });
+            return res.status(500).send({ message: '添加收藏失败' });
         }
-        res.send({ message: 'Favorite added successfully'});
+        res.send({ message: '成功添加收藏'});
     });
 });
 
@@ -62,9 +59,9 @@ router.post('/remove', (req, res) => {
     db.query(sql, [user_id, station_id], (err, result) => {
         if (err) {
             console.error('Error removing favorite:', err);
-            return res.status(500).send({ message: 'Failed to remove favorite' });
+            return res.status(500).send({ message: '移除收藏失败' });
         }
-        res.send({ message: 'Favorite removed successfully'});
+        res.send({ message: '成功移除收藏'});
     })
 })
 

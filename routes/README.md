@@ -1,6 +1,8 @@
 ## 接口说明
 
-> 需要增加接口功能可以直接联系我
+> 未更新，建议自己到 routes 下面找接口用，默认都是 /route下文件名/文件内路由，例如 /auth/login
+
+> 需要增加接口功能请整理成文档在 GitHub 上提交 issue，我会尽快处理。
 
 ### 使用范例：
 
@@ -201,9 +203,6 @@
         + `station_id`：驿站ID
     + 返回参数：
         + `message`：成功为 "Favorite removed successfully"
-
-
-
 
 #### 驿站
 
