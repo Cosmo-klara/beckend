@@ -1,5 +1,35 @@
 ## 一个简单的nodejs后端服务
 
+**项目结构**
+
+📦beckend
+ ┣ 📂.git
+ ┣ 📂data
+ ┃ ┣ 📜database.sql
+ ┃ ┣ 📜README.md
+ ┃ ┗ 📜test.sql
+ ┣ 📂doc
+ ┃ ┣ 📜Database.md
+ ┃ ┣ 📜Interface_test.ipynb
+ ┃ ┗ 📜Interface.md
+ ┣ 📂node_modules
+ ┣ 📂routes
+ ┃ ┣ 📜auth.js
+ ┃ ┣ 📜comment.js
+ ┃ ┣ 📜favorite.js
+ ┃ ┣ 📜manager.js
+ ┃ ┣ 📜README.md
+ ┃ ┣ 📜station.js
+ ┃ ┣ 📜user.js
+ ┃ ┣ 📜waybill.js
+ ┃ ┗ 📜接口文档.md
+ ┣ 📜.gitignore
+ ┣ 📜db.js
+ ┣ 📜package-lock.json
+ ┣ 📜package.json
+ ┣ 📜README.md
+ ┗ 📜server.js
+
 ### 1. 安装依赖
 
 进入项目目录，执行命令：
