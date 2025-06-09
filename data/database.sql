@@ -11,7 +11,7 @@ CREATE TABLE users (
 
 CREATE TABLE station_managers (
     id CHAR(6) PRIMARY KEY,                    -- 管理员ID
-    manager_name VARCHAR(50) NOT NULL UNIQUE,  -- 管理员用户名
+    user_name VARCHAR(50) NOT NULL UNIQUE,  -- 管理员用户名
     password VARCHAR(255) NOT NULL,            -- 密码
     CHECK (id REGEXP '^[0-9]{6}$')
 );

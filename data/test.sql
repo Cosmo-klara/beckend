@@ -7,7 +7,7 @@ INSERT INTO users (id, user_name, password) VALUES
 ('100000004', 'user_4', 'hashed_pwd_4');
 
 -- 管理员
-INSERT INTO station_managers (id, manager_name, password) VALUES
+INSERT INTO station_managers (id, user_name, password) VALUES
 ('200000', 'admin_0', '0'),
 ('200001', 'admin_1', 'admin_pwd_1'),
 ('200002', 'admin_2', 'admin_pwd_2'),
