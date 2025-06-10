@@ -10,12 +10,14 @@
  ┃ ┣ 📜README.md
  ┃ ┗ 📜test.sql
  ┣ 📂doc
+ ┃ ┣ 📂img
  ┃ ┣ 📜Database.md
  ┃ ┣ 📜Interface_test.ipynb
  ┃ ┗ 📜Interface.md
  ┣ 📂node_modules
  ┣ 📂routes
  ┃ ┣ 📜auth.js
+ ┃ ┣ 📜block.js
  ┃ ┣ 📜comment.js
  ┃ ┣ 📜favorite.js
  ┃ ┣ 📜manager.js

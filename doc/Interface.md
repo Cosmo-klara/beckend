@@ -63,6 +63,33 @@
 - 返回参数：
   - `message`：删除结果消息
 
+## 收藏 `/block`
+
+### ✅ 查看我的屏蔽
+- 接口地址：`http://localhost:3000/block/query`
+- 请求方法：POST
+- 请求参数：
+  - `userId`：用户 ID
+- 返回参数：屏蔽的驿站信息列表
+
+### ✅ 添加屏蔽
+- 接口地址：`http://localhost:3000/block/add`
+- 请求方法：POST
+- 请求参数：
+  - `userId`：用户 ID
+  - `stationId`：驿站 ID
+- 返回参数：
+  - `message`：添加屏蔽结果
+
+### ✅ 移除屏蔽
+- 接口地址：`http://localhost:3000/block/remove`
+- 请求方法：POST
+- 请求参数：
+  - `userId`：用户 ID
+  - `stationId`：驿站 ID
+- 返回参数：
+  - `message`：移除结果
+
 ## 收藏 `/favorite`
 
 ### ✅ 查看我的收藏
@@ -135,6 +162,7 @@
 - 请求参数：
   - longitude：用户位置经度
   - latitude： 用户位置纬度
+  - userId: 用户 ID, 用于处理屏蔽驿站
 - 返回参数：
   - `stations`：{ 驿站信息列表 + distance(米) } (距离升序，限制五条)
 
@@ -145,6 +173,7 @@
   - `name`：搜索框内容
   - longitude：用户位置经度
   - latitude： 用户位置纬度
+  - userId: 用户 ID
 - 返回参数：
   - `stations`：{ 驿站信息列表 + distance(米) } (距离升序，限制五条)
 

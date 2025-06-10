@@ -58,6 +58,14 @@
 | station_id | int | NO | MUL | NULL |  |
 | favorite_time | timestamp | YES |  | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
 
+### Table: blocks
+
+| Field | Type | Null | Key | Default | Extra |
+| --- | --- | --- | --- | --- | --- |
+| id | int | NO | PRI | NULL | auto_increment |
+| user_id | char(9) | NO | MUL | NULL |  |
+| station_id | int | NO | MUL | NULL |  |
+
 ### Table: waybills 运单
 
 | Field | Type | Null | Key | Default | Extra |
