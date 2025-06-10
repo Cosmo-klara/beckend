@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const bodyParser = require('body-parser');
 
 // 注册路由
@@ -26,6 +27,11 @@ app.use('/user', userRoutes);
 app.use('/manager', managerRoutes);
 app.use('/comment', commentRoutes);
 app.use('/waybill', waybillRoutes);
+
+app.use(express.static(path.join(__dirname, 'doc')));
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'doc', 'Interface_test.html'));
+});
 
 const PORT = process.env.PORT || 3000;
 
