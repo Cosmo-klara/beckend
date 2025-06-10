@@ -20,6 +20,10 @@ router.post('/query_by_name', (req, res) => {
 
     if (!name || name.trim() === '')
         return res.status(400).send({ message: 'name 参数不能为空' });
+    if (!longitude || !latitude)
+        return res.status(400).send({ message: 'longitude 和 latitude 参数不能为空' });
+    if (!userId)
+        return res.status(400).send({ message: '缺少 userId 参数' });
 
     const sql = `
         SELECT s.*
@@ -53,6 +57,10 @@ router.post('/query_by_name', (req, res) => {
 
 router.post('/query', (req, res) => {
     const { longitude, latitude, userId } = req.body;
+    if (!longitude ||!latitude)
+        return res.status(400).send({ message: 'longitude 和 latitude 参数不能为空' });
+    if (!userId)
+        return res.status(400).send({ message: '缺少 userId 参数' });
 
     const sql = `
         SELECT s.*

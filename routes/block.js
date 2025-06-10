@@ -4,6 +4,8 @@ const db = require('../db.js');
 
 router.post('/query', (req, res) => {
     const { userId } = req.body;
+    if (!userId)
+        return res.status(400).send({ message: '缺少 userId 参数' });
 
     const sql = `
         SELECT
@@ -33,6 +35,8 @@ router.post('/query', (req, res) => {
 
 router.post('/add', (req, res) => {
     const { userId, stationId } = req.body;
+    if (!userId || !stationId)
+        return res.status(400).send({ message: '缺少参数' });
 
     const sql = `INSERT INTO blocks (user_id, station_id) VALUES (?, ?)`;
 

@@ -4,6 +4,8 @@ const db = require('../db.js');
 
 router.post('/rename', (req, res) => {
     const { userId, user_name } = req.body;
+    if (!userId || !user_name)
+        return res.status(400).send({ message: '缺少 userId 或 user_name 参数' });
     const sql = `UPDATE users SET user_name =? WHERE id =?`;
 
     db.query(sql, [user_name, userId], (err, result) => {
@@ -36,6 +38,8 @@ router.post('/reset_password', (req, res) => {
 
 router.post('/query_address', (req, res) => {
     const { userId } = req.body;
+    if (!userId)
+        return res.status(400).send({ message: '缺少 userId 参数' });
 
     const sql = `SELECT address_list FROM users WHERE id = ?`;
 
@@ -50,7 +54,8 @@ router.post('/query_address', (req, res) => {
 // 一次添加一条
 router.post('/add_address', (req, res) => {
     const { userId, address } = req.body;
-
+    if (!userId || !address)
+        return res.status(400).send({ message: '缺少 userId 或 address 参数' });
     const sql = `
         UPDATE users
         SET address_list = JSON_ARRAY_APPEND(
@@ -75,6 +80,8 @@ router.post('/add_address', (req, res) => {
 
 router.post('/delete_address', (req, res) => {
     const { userId, index } = req.body;
+    if (!userId ||!index)
+        return res.status(400).send({ message: '缺少 userId 或 index 参数' });
 
     const sql = `
         UPDATE users

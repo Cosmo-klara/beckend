@@ -4,6 +4,8 @@ const db = require('../db.js');
 
 router.post('/query', (req, res) => {
     const { managerId } = req.body;
+    if (!managerId)
+        return res.status(400).send({ message: 'Missing managerId parameter' });
     const sql = `SELECT * FROM stations WHERE manager_id = ?`;
 
     db.query(sql, [managerId], (err, result) => {
@@ -24,6 +26,8 @@ router.post('/add', (req, res) => {
         capacity,
         is_open
     } = req.body;
+    if (!managerId || !station_name || !address || !business_hours || !business_area || !capacity || !is_open)
+        return res.status(400).send({ message: 'Missing required parameters' });
 
     const sql = `INSERT INTO stations (manager_id, station_name, address, business_hours, business_area, capacity, is_open) VALUES (?, ?, ?, ?, ?, ?, ?)`;
     db.query(sql, [managerId, station_name, address, business_hours, business_area, capacity, is_open], (err, result) => {
@@ -40,6 +44,9 @@ router.post('/add', (req, res) => {
 router.post('/modify', (req, res) => {
     const { stationId, station_name, address, business_hours, business_area, capacity, is_open } = req.body;
 
+    if (!stationId ||!station_name ||!address ||!business_hours ||!business_area ||!capacity ||!is_open)
+        return res.status(400).send({ message: 'Missing required parameters' });
+
     const sql = `UPDATE stations SET station_name = ?, address = ?, business_hours = ?, business_area = ?,capacity = ?, is_open = ? WHERE station_id = ?`;
     db.query(sql, [station_name, address, business_hours, business_area, capacity, is_open, stationId], (err, result) => {
         if (err) {
@@ -55,6 +62,8 @@ router.post('/modify', (req, res) => {
 // 移除驿站
 router.post('/remove', (req, res) => {
     const { stationId } = req.body;
+    if (!stationId)
+        return res.status(400).send({ message: 'Missing stationId parameter' });
 
     const sql = `DELETE FROM stations WHERE station_id =?`;
     db.query(sql, [stationId], (err, result) => {

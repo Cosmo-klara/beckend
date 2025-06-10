@@ -4,6 +4,8 @@ const db = require('../db.js');
 
 router.post('/not_shipped', (req, res) => {
     const { userId } = req.body;
+    if(!userId)
+        return res.status(400).send({ message: '缺少参数' });
 
     const sql = `
         SELECT
@@ -27,6 +29,8 @@ router.post('/not_shipped', (req, res) => {
 
 router.post('/pending_pickup', (req, res) => {
     const { userId } = req.body;
+    if(!userId)
+        return res.status(400).send({ message: '缺少参数' });
 
     const sql = `
         SELECT
@@ -64,7 +68,7 @@ router.post('/in_transit', (req, res) => {
             console.error(err);
             return res.status(500).send({ message: '查询失败' });
         }
-        if(result.length === 0) 
+        if(result.length === 0)
             return res.status(404).send({ message: '未找到该运单' });
         res.send({ waybills: result });
     });

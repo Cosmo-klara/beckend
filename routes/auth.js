@@ -5,6 +5,8 @@ const db = require('../db.js');
 // 建议在登录后将用户信息缓存到变量中传递，用于其他查询传参
 router.post('/login', (req, res) => {
     const { id, password } = req.body;
+    if (!id || !password)
+        return res.status(400).send('Missing ID or password');
 
     let tableName;
     if (id.length === 9)
@@ -30,6 +32,8 @@ router.post('/login', (req, res) => {
 
 router.post('/register', (req, res) => {
     const { role, id, password } = req.body;
+    if (!role || !id || !password)
+        return res.status(400).send('Missing role, ID or password');
 
     let tableName;
     if (role === 'user') {
