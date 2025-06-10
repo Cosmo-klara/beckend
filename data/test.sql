@@ -40,6 +40,10 @@ INSERT INTO favorites (user_id, station_id) VALUES
 ('100000000', 5),
 ('100000004', 5);
 
+INSERT INTO blocks (user_id, station_id) VALUES
+('100000000', 1),
+('100000000', 2);
+
 INSERT INTO comments (user_id, station_id, speed_score, service_score, price_score, comment_content, timestamp) VALUES
     ('100000004', 5, 5, 4, 5, '推荐', '2025-05-21 13:02:40'),
     ('100000003', 5, 4, 3, 5, '不错', '2025-05-14 13:02:40'),

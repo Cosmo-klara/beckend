@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 // 注册路由
 const authRoutes = require('./routes/auth');
+const blockRoutes = require('./routes/block');
 const favoriteRoutes = require('./routes/favorite');
 const stationRoutes = require('./routes/station');
 const userRoutes = require('./routes/user');
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/auth', authRoutes);
+app.use('/block', blockRoutes);
 app.use('/favorite', favoriteRoutes);
 app.use('/station', stationRoutes);
 app.use('/user', userRoutes);

@@ -41,9 +41,8 @@ router.post('/query_address', (req, res) => {
 
     db.query(sql, [userId], (err, result) => {
         if (err) throw err;
-        if (result.length === 0) {
+        if (result.length === 0)
             return res.status(400).send({ message: '地址为空' });
-        }
         res.send({ address: result });
     });
 });
@@ -94,24 +93,5 @@ router.post('/delete_address', (req, res) => {
         res.send({ message: '地址删除成功' });
     });
 });
-
-module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports = router;

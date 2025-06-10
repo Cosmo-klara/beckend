@@ -82,6 +82,16 @@ CREATE TABLE favorites (
     UNIQUE (user_id, station_id)
 );
 
+CREATE TABLE blocks (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id CHAR(9) NOT NULL,
+    station_id INT NOT NULL,
+
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (station_id) REFERENCES stations(station_id),
+    UNIQUE (user_id, station_id)
+);
+
 CREATE TABLE waybills (
     tracking_number INT PRIMARY KEY AUTO_INCREMENT,        -- 运单号（4位数字，系统自增）
     send_time DATETIME NOT NULL,                           -- 发出时间（格式 YYYY-MM-DD HH:MM）
